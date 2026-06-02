@@ -12,6 +12,25 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+
+    # The integration suite uses Testcontainers by default (local dev). In CI we run the
+    # same suite against this Postgres service container via TEST_DATABASE_URL — pulled by
+    # the runner infra, so it's faster and far more reliable than a runtime image pull.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: blast_radius_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - uses: actions/checkout@v4
 
@@ -34,10 +53,10 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # Integration tests boot a real Postgres via Testcontainers, using the Docker
-      # daemon available on the runner. No service container or fixture URL needed.
       - name: Test
         run: pnpm test
+        env:
+          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/blast_radius_test
 
       - name: Audit dependencies
         run: pnpm audit --audit-level=high

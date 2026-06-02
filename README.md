@@ -78,10 +78,10 @@ same fixtures, and the SQL output must match it exactly — across a clean DAG, 
 with an `alpha → beta → gamma → alpha` cycle, and disconnected components. There's also
 an explicit test that the cyclic graph **terminates** rather than hanging.
 
-Tests run against a real Postgres via [Testcontainers](https://testcontainers.com/) in
-CI (the Docker daemon on the runner), and accept a `TEST_DATABASE_URL` to run against an
-existing Postgres for fast local iteration. See
-[`packages/api/test/integration`](packages/api/test/integration).
+The suite boots a real Postgres with [Testcontainers](https://testcontainers.com/) by
+default, and accepts a `TEST_DATABASE_URL` to run against an existing instance instead —
+which is how CI runs it, against a Postgres service container, for speed and reliability.
+See [`packages/api/test/integration`](packages/api/test/integration).
 
 ## Architecture
 

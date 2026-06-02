@@ -17,8 +17,7 @@ adjacency list, then answers all three with `WITH RECURSIVE` queries — no grap
 database, no in-memory BFS in the app layer. The hard logic lives in SQL, and it's
 verified against a real Postgres with Testcontainers.
 
-> A hosted demo will live at `blast-radius.lucashvieira.dev` (deploy in progress).
-> Until then, it runs locally in about 30 seconds — see [Run it locally](#run-it-locally).
+> **Live demo:** https://blast-radius.lucashvieira.dev — or run it locally in about 30 seconds, see [Run it locally](#run-it-locally).
 
 ---
 
